@@ -858,7 +858,7 @@ public class AuthorizeRestWebServiceImpl implements AuthorizeRestWebService {
         }
     }
 
-    private Map<String, String> getGenericRequestMap(HttpServletRequest httpRequest) {
+    public static Map<String, String> getGenericRequestMap(HttpServletRequest httpRequest) {
         Map<String, String> result = new HashMap<>();
         for (Entry<String, String[]> entry : httpRequest.getParameterMap().entrySet()) {
             result.put(entry.getKey(), entry.getValue()[0]);

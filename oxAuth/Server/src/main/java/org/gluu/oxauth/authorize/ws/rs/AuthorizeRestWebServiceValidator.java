@@ -57,8 +57,15 @@ public class AuthorizeRestWebServiceValidator {
     @Inject
     private AppConfiguration appConfiguration;
 
+    public Client validateClient(AuthzRequest authzRequest) {
+        final Client client = validateClient(authzRequest.getClientId(), authzRequest.getState());
+        authzRequest.setClient(client);
+        return client;
+    }
+
     public Client validateClient(String clientId, String state) {
         if (StringUtils.isBlank(clientId)) {
+            log.debug("client_id is empty or blank {}.", clientId);
             throw new WebApplicationException(Response
                     .status(Response.Status.BAD_REQUEST)
                     .entity(errorResponseFactory.getErrorAsJson(AuthorizeErrorResponseType.UNAUTHORIZED_CLIENT, state, "client_id is empty or blank."))
@@ -69,6 +76,7 @@ public class AuthorizeRestWebServiceValidator {
         try {
             final Client client = clientService.getClient(clientId);
             if (client == null) {
+                log.debug("Unable to find client by id {}.", clientId);
                 throw new WebApplicationException(Response
                         .status(Response.Status.UNAUTHORIZED)
                         .entity(errorResponseFactory.getErrorAsJson(AuthorizeErrorResponseType.UNAUTHORIZED_CLIENT, state, "Unable to find client."))
@@ -76,6 +84,7 @@ public class AuthorizeRestWebServiceValidator {
                         .build());
             }
             if (client.isDisabled()) {
+                log.debug("Client {} is disabled.", clientId);
                 throw new WebApplicationException(Response
                         .status(Response.Status.UNAUTHORIZED)
                         .entity(errorResponseFactory.getErrorAsJson(AuthorizeErrorResponseType.DISABLED_CLIENT, state, "Client is disabled."))
@@ -85,6 +94,7 @@ public class AuthorizeRestWebServiceValidator {
 
             return client;
         } catch (EntryPersistenceException e) { // Invalid clientId
+            log.debug("Unable to find client on AS by client_id: {}", clientId);
             throw new WebApplicationException(Response
                     .status(Response.Status.UNAUTHORIZED)
                     .entity(errorResponseFactory.getErrorAsJson(AuthorizeErrorResponseType.UNAUTHORIZED_CLIENT, state, "Unable to find client on AS."))

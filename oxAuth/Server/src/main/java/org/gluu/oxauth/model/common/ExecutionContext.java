@@ -1,23 +1,32 @@
 package org.gluu.oxauth.model.common;
 
+import org.gluu.model.custom.script.conf.CustomScriptConfiguration;
+import org.gluu.oxauth.authorize.ws.rs.AuthzRequest;
+import org.gluu.oxauth.model.authzdetails.AuthzDetail;
+import org.gluu.oxauth.model.authzdetails.AuthzDetails;
 import org.gluu.oxauth.model.configuration.AppConfiguration;
 import org.gluu.oxauth.model.ldap.TokenLdap;
 import org.gluu.oxauth.model.registration.Client;
+import org.gluu.oxauth.model.session.SessionId;
 import org.gluu.oxauth.service.AttributeService;
 
+import javax.faces.context.ExternalContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * @author Yuriy Zabrovarnyy
  */
 public class ExecutionContext {
 
-    private final HttpServletRequest httpRequest;
-    private final HttpServletResponse httpResponse;
+    private HttpServletRequest httpRequest;
+    private HttpServletResponse httpResponse;
 
     private Client client;
     private AuthorizationGrant grant;
+    private User user;
+    private CustomScriptConfiguration script;
 
     private TokenLdap idTokenEntity;
     private TokenLdap accessTokenEntity;
@@ -28,9 +37,129 @@ public class ExecutionContext {
 
     private int refreshTokenLifetimeFromScript;
 
+    private AuthzRequest authzRequest;
+    private AuthzDetails authzDetails;
+    private AuthzDetail authzDetail;
+
+    private SessionId sessionId;
+    private List<SessionId> currentSessions;
+    private SessionId authorizationChallengeSessionId;
+
+    public ExecutionContext() {
+    }
+
     public ExecutionContext(HttpServletRequest httpRequest, HttpServletResponse httpResponse) {
         this.httpRequest = httpRequest;
         this.httpResponse = httpResponse;
+    }
+
+    public static ExecutionContext of(AuthzRequest authzRequest) {
+        ExecutionContext executionContext = new ExecutionContext();
+        if (authzRequest == null) {
+            return executionContext;
+        }
+
+        executionContext.setHttpRequest(authzRequest.getHttpRequest());
+        executionContext.setHttpResponse(authzRequest.getHttpResponse());
+        executionContext.setClient(authzRequest.getClient());
+        executionContext.setAuthzRequest(authzRequest);
+        executionContext.setAuthzDetails(authzRequest.getAuthzDetails());
+        return executionContext;
+    }
+
+    public static ExecutionContext of(ExternalContext externalContext) {
+        ExecutionContext executionContext = new ExecutionContext();
+        if (externalContext != null) {
+            if (externalContext.getRequest() instanceof HttpServletRequest) {
+                executionContext.setHttpRequest((HttpServletRequest) externalContext.getRequest());
+            }
+            if (externalContext.getResponse() instanceof HttpServletResponse) {
+                executionContext.setHttpResponse((HttpServletResponse) externalContext.getResponse());
+            }
+        }
+        return executionContext;
+    }
+
+    public List<SessionId> getCurrentSessions() {
+        return currentSessions;
+    }
+
+    public ExecutionContext setCurrentSessions(List<SessionId> currentSessions) {
+        this.currentSessions = currentSessions;
+        return this;
+    }
+
+    public SessionId getAuthorizationChallengeSessionId() {
+        return authorizationChallengeSessionId;
+    }
+
+    public ExecutionContext setAuthorizationChallengeSessionId(SessionId authorizationChallengeSessionId) {
+        this.authorizationChallengeSessionId = authorizationChallengeSessionId;
+        return this;
+    }
+
+    public CustomScriptConfiguration getScript() {
+        return script;
+    }
+
+    public ExecutionContext setScript(CustomScriptConfiguration script) {
+        this.script = script;
+        return this;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public ExecutionContext setUser(User user) {
+        this.user = user;
+        return this;
+    }
+
+    public SessionId getSessionId() {
+        return sessionId;
+    }
+
+    public ExecutionContext setSessionId(SessionId sessionId) {
+        this.sessionId = sessionId;
+        return this;
+    }
+
+    public AuthzRequest getAuthzRequest() {
+        return authzRequest;
+    }
+
+    public ExecutionContext setAuthzRequest(AuthzRequest authzRequest) {
+        this.authzRequest = authzRequest;
+        return this;
+    }
+
+    public AuthzDetails getAuthzDetails() {
+        return authzDetails;
+    }
+
+    public ExecutionContext setAuthzDetails(AuthzDetails authzDetails) {
+        this.authzDetails = authzDetails;
+        return this;
+    }
+
+    public AuthzDetail getAuthzDetail() {
+        return authzDetail;
+    }
+
+    public ExecutionContext setAuthzDetail(AuthzDetail authzDetail) {
+        this.authzDetail = authzDetail;
+        return this;
+    }
+
+    public ExecutionContext setHttpRequest(HttpServletRequest httpRequest) {
+        this.httpRequest = httpRequest;
+        return this;
+    }
+
+    public ExecutionContext setHttpResponse(HttpServletResponse httpResponse) {
+        this.httpResponse = httpResponse;
+        return this;
     }
 
     public int getRefreshTokenLifetimeFromScript() {

@@ -26,9 +26,11 @@ import java.util.*;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AppConfiguration implements Configuration {
 
+    public static final int DEFAULT_AUTHORIZATION_CHALLENGE_SESSION_LIFETIME = 86400;
     public static final int DEFAULT_SESSION_ID_LIFETIME = 86400;
     public static final KeySelectionStrategy DEFAULT_KEY_SELECTION_STRATEGY = KeySelectionStrategy.OLDER;
     public static final String DEFAULT_STAT_SCOPE = "jans_stat";
+    public static final String DEFAULT_AUTHORIZATION_CHALLENGE_ACR = "default_challenge";
 
     private String issuer;
     private String baseEndpoint;
@@ -68,6 +70,10 @@ public class AppConfiguration implements Configuration {
     private String statAuthorizationScope;
     private int statTimerIntervalInSeconds;
     private int statWebServiceIntervalLimitInSeconds;
+
+    private String authorizationChallengeDefaultAcr = DEFAULT_AUTHORIZATION_CHALLENGE_ACR;
+    private Boolean authorizationChallengeShouldGenerateSession = false;
+    private Integer authorizationChallengeSessionLifetimeInSeconds = DEFAULT_AUTHORIZATION_CHALLENGE_SESSION_LIFETIME;
 
     private Boolean allowSpontaneousScopes = true;
     private int spontaneousScopeLifetime;
@@ -276,6 +282,18 @@ public class AppConfiguration implements Configuration {
     private Boolean allowBlankValuesInDiscoveryResponse;
 
     private Boolean skipAuthenticationFilterOptionsMethod = false;
+
+    public Integer getAuthorizationChallengeSessionLifetimeInSeconds() {
+        if (authorizationChallengeSessionLifetimeInSeconds == null) {
+            authorizationChallengeSessionLifetimeInSeconds = DEFAULT_AUTHORIZATION_CHALLENGE_SESSION_LIFETIME;
+        }
+        return authorizationChallengeSessionLifetimeInSeconds;
+    }
+
+    public AppConfiguration setAuthorizationChallengeSessionLifetimeInSeconds(Integer authorizationChallengeSessionLifetimeInSeconds) {
+        this.authorizationChallengeSessionLifetimeInSeconds = authorizationChallengeSessionLifetimeInSeconds;
+        return this;
+    }
 
     public Boolean getSubjectIdentifierBasedOnWholeUriBackwardCompatibility() {
         return subjectIdentifierBasedOnWholeUriBackwardCompatibility;
@@ -940,6 +958,26 @@ public class AppConfiguration implements Configuration {
 
     public void setSubjectTypesSupported(List<String> subjectTypesSupported) {
         this.subjectTypesSupported = subjectTypesSupported;
+    }
+
+    public String getAuthorizationChallengeDefaultAcr() {
+        if (authorizationChallengeDefaultAcr == null) authorizationChallengeDefaultAcr = DEFAULT_AUTHORIZATION_CHALLENGE_ACR;
+        return authorizationChallengeDefaultAcr;
+    }
+
+    public AppConfiguration setAuthorizationChallengeDefaultAcr(String authorizationChallengeDefaultAcr) {
+        this.authorizationChallengeDefaultAcr = authorizationChallengeDefaultAcr;
+        return this;
+    }
+
+    public Boolean getAuthorizationChallengeShouldGenerateSession() {
+        if (authorizationChallengeShouldGenerateSession == null) authorizationChallengeShouldGenerateSession = false;
+        return authorizationChallengeShouldGenerateSession;
+    }
+
+    public AppConfiguration setAuthorizationChallengeShouldGenerateSession(Boolean authorizationChallengeShouldGenerateSession) {
+        this.authorizationChallengeShouldGenerateSession = authorizationChallengeShouldGenerateSession;
+        return this;
     }
 
     public String getDefaultSubjectType() {

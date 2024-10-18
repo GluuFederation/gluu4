@@ -111,6 +111,7 @@ public class OpenIdConfiguration extends HttpServlet {
 			jsonObj.put(CLIENT_INFO_ENDPOINT, appConfiguration.getClientInfoEndpoint());
 			jsonObj.put(CHECK_SESSION_IFRAME, appConfiguration.getCheckSessionIFrame());
 			jsonObj.put(END_SESSION_ENDPOINT, appConfiguration.getEndSessionEndpoint());
+			jsonObj.put(AUTHORIZATION_CHALLENGE_ENDPOINT, endpointUrl("/authorize-challenge"));
 			jsonObj.put(JWKS_URI, appConfiguration.getJwksUri());
 			jsonObj.put(REGISTRATION_ENDPOINT, appConfiguration.getRegistrationEndpoint());
 			jsonObj.put(ID_GENERATION_ENDPOINT, appConfiguration.getIdGenerationEndpoint());

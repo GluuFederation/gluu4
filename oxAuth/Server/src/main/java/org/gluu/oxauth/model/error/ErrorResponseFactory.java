@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.enterprise.inject.Vetoed;
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.CacheControl;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
@@ -113,6 +114,15 @@ public class ErrorResponseFactory implements Configuration {
 
     public String getErrorAsQueryString(IErrorType p_type, String p_state, String reason) {
         return getErrorResponse(p_type, p_state, reason).toQueryString();
+    }
+
+    public Response.ResponseBuilder newErrorResponse(Response.Status status) {
+        final CacheControl cacheControl = new CacheControl();
+        cacheControl.setNoStore(true);
+
+        return Response.status(status)
+                .cacheControl(cacheControl)
+                .type(MediaType.APPLICATION_JSON_TYPE);
     }
 
     public DefaultErrorResponse getErrorResponse(IErrorType type, String p_state, String reason) {

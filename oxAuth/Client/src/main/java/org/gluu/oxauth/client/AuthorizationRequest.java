@@ -6,14 +6,6 @@
 
 package org.gluu.oxauth.client;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.gluu.oxauth.model.authorize.AuthorizeRequestParam;
 import org.gluu.oxauth.model.authorize.CodeVerifier;
@@ -24,6 +16,13 @@ import org.gluu.oxauth.model.common.ResponseType;
 import org.gluu.oxauth.model.util.Util;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Represents an authorization request to send to the authorization server.
@@ -90,6 +89,10 @@ public class AuthorizationRequest extends BaseRequest {
         this.nonce = nonce;
         prompts = new ArrayList<Prompt>();
         useNoRedirectHeader = false;
+    }
+
+    public AuthorizationRequest(String requestUri) {
+        this.requestUri = requestUri;
     }
 
     public CodeVerifier generateAndSetCodeChallengeWithMethod() {

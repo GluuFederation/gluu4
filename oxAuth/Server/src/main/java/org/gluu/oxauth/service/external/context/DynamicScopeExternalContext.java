@@ -11,6 +11,7 @@ import org.gluu.oxauth.model.common.User;
 import org.gluu.oxauth.model.token.JsonWebResponse;
 import org.oxauth.persistence.model.Scope;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class DynamicScopeExternalContext extends ExternalScriptContext {
 	private IAuthorizationGrant authorizationGrant;
 
     public DynamicScopeExternalContext(List<Scope> dynamicScopes, JsonWebResponse jsonWebResponse, IAuthorizationGrant authorizationGrant) {
-    	super(null);
+    	super((HttpServletRequest) null);
 
     	this.dynamicScopes = dynamicScopes;
     	this.jsonWebResponse = jsonWebResponse;

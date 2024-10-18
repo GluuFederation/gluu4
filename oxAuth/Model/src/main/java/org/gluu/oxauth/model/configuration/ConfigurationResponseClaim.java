@@ -30,6 +30,7 @@ public interface ConfigurationResponseClaim {
     String DEVICE_AUTHZ_ENDPOINT = "device_authorization_endpoint";
     String SCOPES_SUPPORTED = "scopes_supported";
     String SCOPE_TO_CLAIMS_MAPPING = "scope_to_claims_mapping";
+    String AUTHORIZATION_CHALLENGE_ENDPOINT = "authorization_challenge_endpoint";
     String RESPONSE_TYPES_SUPPORTED = "response_types_supported";
     String RESPONSE_MODES_SUPPORTED = "response_modes_supported";
     String GRANT_TYPES_SUPPORTED = "grant_types_supported";

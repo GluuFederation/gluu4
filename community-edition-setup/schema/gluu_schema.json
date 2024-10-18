@@ -5448,6 +5448,27 @@
         {
             "kind": "STRUCTURAL",
             "may": [
+                "oxId",
+                "oxAuthUserDN",
+                "creationDate",
+                "oxAuthClientId",
+                "oxAttributes"
+            ],
+            "must": [
+                "objectclass"
+            ],
+            "names": [
+                "oxAuthzChallSess"
+            ],
+            "oid": "oxObjectClass",
+            "sup": [
+                "top"
+            ],
+            "x_origin": "Gluu created objectclass"
+        },
+        {
+            "kind": "STRUCTURAL",
+            "may": [
                 "ou",
                 "oxAuthConfDynamic",
                 "oxAuthConfErrors",
