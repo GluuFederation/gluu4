@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## 4.5.5 (2024-10-18)
+
+Manually update version
+
+Details https://github.com/GluuFederation/gluu-passport/issues/574
+
 ## [7.0.0](https://github.com/GluuFederation/gluu-passport/compare/v6.0.0...v7.0.0) (2024-08-08)
 
 
